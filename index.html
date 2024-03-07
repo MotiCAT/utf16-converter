@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UTF-16変換ツール</title>
+    <script>
+        function convertToUtf16() {
+            var text = document.getElementById('inputText').value;
+            var utf16Text = '';
+            for (var i = 0; i < text.length; i++) {
+                utf16Text += '\\u' + text.charCodeAt(i).toString(16).padStart(4, '0');
+            }
+            var outputText = document.getElementById('outputText');
+            outputText.value = utf16Text;
+        }
+
+        function convertFromUtf16() {
+            var text = document.getElementById('inputTextReverse').value;
+            var originalText = '';
+            var codePoints = text.split('\\u').slice(1);
+            for (var i = 0; i < codePoints.length; i++) {
+                originalText += String.fromCharCode(parseInt(codePoints[i], 16));
+            }
+            var outputTextReverse = document.getElementById('outputTextReverse');
+            outputTextReverse.value = originalText;
+        }
+
+        function copyToClipboard(id) {
+            var outputText = document.getElementById(id);
+            outputText.select();
+            document.execCommand('copy');
+        }
+    </script>
+</head>
+<body>
+    <h1>UTF-16変換ツール</h1>
+    <h2>テキスト→UTF-16:</h2>
+    <textarea id="inputText" rows="10" cols="50"></textarea>
+    <button onclick="convertToUtf16()">変換</button>
+    <textarea id="outputText" rows="10" cols="50" readonly onclick="this.select()"></textarea>
+    <button onclick="copyToClipboard('outputText')">コピー</button>
+    <h2>UTF-16→テキスト:</h2>
+    <textarea id="inputTextReverse" rows="10" cols="50"></textarea>
+    <button onclick="convertFromUtf16()">変換</button>
+    <textarea id="outputTextReverse" rows="10" cols="50" readonly onclick="this.select()"></textarea>
+    <button onclick="copyToClipboard('outputTextReverse')">コピー</button>
+</body>
+</html>
